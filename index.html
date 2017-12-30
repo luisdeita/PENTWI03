@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<!-- comments in english because i want-->
+		<title>Building Responsive UI with Bootstrap</title>
+		
+		<!--JS-->
+		<script src="lib/js/jquery-3.2.1.min.js"></script>
+		<script src="lib/js/popper.min.js"></script>
+		<script src="lib/js/bootstrap.min.js"></script>
+		
+		<!--CSS-->
+		<link rel="stylesheet" href="lib/css/bootstrap.min.css"></link>
+		<link rel="stylesheet" href="lib/css/bootstrap-grid.min.css"></link>
+		<style type="text/css">
+			.record-id{
+				text-decoration:underline;
+			}
+			.record-id:hover{
+				cursor: pointer;
+			}
+			#submit-success, .add-extra, #add-record-form, #submit-error, #add-error, #update-employee,#description{
+				display:none;
+			}
+			#add-employee{
+				margin-bottom: 15px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-10 col-sm-12 offset-md-1">
+					<section>
+						<div class="jumbotron jumbotron-fluid">
+							<div class="container">
+								<h1 class="display-4">PENTWI03 - Javascript for experienced developers</h1>
+								<h1 class="display-6">Luis Gustavo De Ita</h1>
+								<p id="description"></p>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
+					<h1 class="display-6">Employee List</h1>
+					<div class="row">
+						<div class="col-md-6">
+							<button type="button" class="btn btn-primary" id="add-employee" data-toggle="tooltip" data-placement="right" title="Click to display add employee form.">Add Employee</button>
+							<form id="add-record-form">
+								<div class="alert alert-danger" role="alert" id="add-error">A field is empty.</div>
+								<input type="hidden" id="selected-id" value=""/>
+								<!--name, age, city, years_experience, years_in_company, english_level-->
+								<div class="row">
+									<div class="col">
+										<div class="form-group">
+											<label class="">Employee Type</label>
+											<select class="form-control" id="add-type">
+												<option value ="" selected>Choose...</option>
+												<option value="developer">Developer</option>
+												<option value="tester">Tester</option>
+												<option value="dbadmin">Db Admin</option>
+											</select>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group">
+											<label>Name: </label>
+											<input class="form-control" type="text" id="add-name" value="" required/>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group">
+											<label>Age: </label>
+											<input class="form-control" type="text" id="add-age" value="" required/>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group">
+											<label>City: </label>
+											<input class="form-control" type="text" id="add-city" value="" required/>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col">
+										<div class="form-group">
+											<label>Years of experience: </label>
+											<input class="form-control" type="text" id="add-experience" value="" required/>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group">
+											<label>Years in company: </label>
+											<input class="form-control" type="text" id="add-company" value="" required/>
+										</div>
+									</div>
+									<div class="col">
+										<div class="form-group">
+											<label>English level: </label>
+											<select class="form-control" id="add-english">
+												<option value="" selected>Choose...</option>
+												<option value="low">Low</option>
+												<option value="medium">Medium</option>
+												<option value="high">High</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-4">
+										<div class="form-group add-extra" id="add-developer">
+											<label>Programming languages: </label>
+											<select class="form-control" id="add-programming" multiple>
+												<option value="php">php</option>
+												<option value="javascript">javascript</option>
+												<option value=".net">.net</option>
+												<option value="java">java</option>
+												<option value="c++">c++</option>
+											</select>
+										</div>
+										<div class="form-group add-extra" id="add-tester">
+											<label>Testing languages: </label>
+											<select class="form-control" id="add-testing" multiple>
+												<option value="python">python</option>
+												<option value="pearl">pearl</option>
+												<option value="java">java</option>
+											</select>
+										</div>
+										<div class="form-group add-extra" id="add-dbadmin">
+											<label>Databases: </label>
+											<select class="form-control" id="add-databases" multiple>
+												<option value="mysql">mysql</option>
+												<option value="oracle">oracle</option>
+												<option value="postgres">postgres</option>
+												<option value="mariaDB">mariaDB</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<button type="button" class="btn btn-primary" id="save-employee" data-toggle="tooltip" data-placement="top" title="Click to save record.">Save</button>
+								<button type="button" class="btn btn-primary" id="update-employee" data-toggle="tooltip" data-placement="top" title="Click to update record.">Update</button>
+								<button type="button" class="btn btn-primary" id="cancel-employee">Cancel</button>
+							</form>
+						</div>
+					</div>
+					<br/>
+					<div class="table-responsive">
+						<div class="alert alert-success" role="alert" id="submit-success">Record Updated successfully.</div>
+						<table class="table table-bordered table-hover" id="data-table">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col"># (Click for details)</th>
+									<th scope="col">Name</th>
+									<th scope="col">Type</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			$( document ).ready(function() {
+				$('[data-toggle="tooltip"]').tooltip();
+
+				var employeesList = [];
+				var employeeIndex = 0;
+				//employee
+				function Employee(name, age, city, years_experience, years_in_company, english_level){
+					this.name = name;
+					this.age = age;
+					this.city = city;
+					this.years_experience = years_experience;
+					this.years_in_company = years_in_company;
+					this.english_level = english_level;
+				}
+				
+				function Developer(name, age, city, years_experience, years_in_company, english_level, programming_languages){
+					Employee.call(this, name, age, city, years_experience, years_in_company, english_level);
+					this.programming_languages = programming_languages;
+				}
+				
+				function Tester(name, age, city, years_experience, years_in_company, english_level, testing_languages){
+					Employee.call(this, name, age, city, years_experience, years_in_company, english_level);
+					this.testing_languages = testing_languages;
+				}
+				
+				function DbAdmin(name, age, city, years_experience, years_in_company, english_level, databases){
+					Employee.call(this, name, age, city, years_experience, years_in_company, english_level);
+					this.databases = databases;
+				}
+				
+				//prototypes
+				Developer.prototype = Object.create(Employee.prototype);
+				Developer.prototype.constructor = Developer;
+				
+				Tester.prototype = Object.create(Employee.prototype);
+				Tester.prototype.constructor = Tester;
+				
+				DbAdmin.prototype = Object.create(Employee.prototype);
+				DbAdmin.prototype.constructor = DbAdmin;
+			
+				//create self calling function
+				((function somefunc(){
+					var descriptionText = 'This example uses object creation and inheritance to create records and update information.';
+					descriptionText += 'Parent object is employee, and child objects can be developer, tester or db admin. Each will have 1 field that is different.';
+					descriptionText += 'All fields on the objects can be updated and set to new values';
+					$('#description').text(descriptionText).fadeIn();
+					//we will display some content
+				})());
+				
+				$('#add-employee').click(function(){
+					$('#add-record-form').show();
+					resetForm();
+					$('#save-employee').show();
+					$('#update-employee').hide();
+				});
+				
+				$('#cancel-employee').click(function(){
+					$('#add-record-form').hide();
+					resetForm();
+				});
+				
+				$('#add-type').on('change', function(){
+					if($('#add-type').val() == ''){
+					}
+					else{
+						console.log($('#add-type').val());
+						$('.add-extra').hide();
+						switch($('#add-type').val()){
+							case 'developer':
+								$('#add-developer').show();
+								break;
+							case 'tester':
+								$('#add-tester').show();
+								break;
+							case 'dbadmin':
+								$('#add-dbadmin').show();
+								break;
+						}
+					}
+				});
+				
+				$('#save-employee').click(function(){
+					//check empty fields first
+					var empty = validateEmpty();
+					if(empty){
+						//show alert
+						$('#add-error').show().fadeOut(8000);
+					}
+					else{
+						//create object
+						switch($('#add-type').val()){
+							case 'developer':
+								var obj = new Developer($('#add-name').val(),$('#add-age').val(),$('#add-city').val(),$('#add-experience').val(),$('#add-company').val(),$('#add-english').val(),$('#add-programming').val());
+								break;
+							case 'tester':
+								var obj = new Tester($('#add-name').val(),$('#add-age').val(),$('#add-city').val(),$('#add-experience').val(),$('#add-company').val(),$('#add-english').val(),$('#add-testing').val());
+								break;
+							case 'dbadmin':
+								var obj = new DbAdmin($('#add-name').val(),$('#add-age').val(),$('#add-city').val(),$('#add-experience').val(),$('#add-company').val(),$('#add-english').val(),$('#add-databases').val());
+								break;
+						}
+						
+						employeesList.push(obj);
+						//add record to table
+						addRow(obj,employeeIndex);
+						employeeIndex++;
+						resetForm();
+						$('#add-record-form').hide();
+						$('#submit-success').show().fadeOut(8000);
+					}
+				});
+				
+				function resetForm(){
+					$('#selected-id').val('');
+					var fields = ['type','name','age','city','experience','company','english'];
+					$.each(fields, function(key,value){
+						$('#add-'+value).val('');
+					});
+					
+					$('#add-programming').val('');
+					$('#add-testing').val('');
+					$('#add-databases').val('');
+					
+					$('.add-extra').hide();
+				}
+				
+				function validateEmpty(){
+					var fields = ['type','name','age','city','experience','company','english'];
+					var empty = false;
+					$.each(fields, function(key,value){
+						if($('#add-'+value).val() == ''){
+							empty = true;
+							return;
+						}
+					});
+					
+					if($('#add-type').val() != ''){
+						switch($('#add-type').val()){
+							case 'developer':
+								if($('#add-programming').val() == ''){
+									empty = true;
+								}
+								break;
+							case 'tester':
+								if($('#add-testing').val() == ''){
+									empty = true;
+								}
+								break;
+							case 'dbadmin':
+								if($('#add-databases').val() == ''){
+									empty = true;
+								}
+								break;
+						}
+					}
+					
+					return empty;
+				}
+				
+				function addRow(employee, index){
+					var row = '';
+					if(employee instanceof Developer)
+						type = 'Developer';
+					if(employee instanceof Tester)
+						type = 'Tester';
+					if(employee instanceof DbAdmin)
+						type = 'Db Admin';
+					row += '<tr id="data-row-'+index+'">';
+					row += '<th scope="row" data-id="'+index+'" class="record-id">'+index+'</th>';
+					row += '<th scope="row" class="employee-name">'+employee.name+'</th>';
+					row += '<th scope="row" class="employee-type">'+type+'</th>';
+					row += '<\/tr';
+					$('#data-table tbody').append(row);
+				}
+				
+				function updateRow(employee, index){
+					if(employee instanceof Developer)
+						type = 'Developer';
+					if(employee instanceof Tester)
+						type = 'Tester';
+					if(employee instanceof DbAdmin)
+						type = 'Db Admin';
+					$('#data-row-'+index+' .employee-name').html(employee.name);
+					$('#data-row-'+index+' .employee-type').html(employee.type);
+				}
+				
+				$(document).on('click', '#data-table th.record-id',function(){
+					$('.add-extra').hide();
+					var selected = $(this).attr('data-id');
+					selectedEmployee = employeesList[selected];
+					$('#selected-id').val(selected);
+					//load details into form
+					console.log(selectedEmployee);
+					var fields = [['name','name'],['age','age'],['city','city'],['experience','years_experience'],['company','years_in_company'],['english','english_level']];
+					$.each(fields,function(key,value){
+						$('#add-'+value[0]).val(selectedEmployee[value[1]]);
+					});
+					
+					if(selectedEmployee instanceof Developer){
+						$('#add-type').val('developer');
+						$('#add-programming').val(selectedEmployee['programming_languages']);
+						$('#add-developer').show();
+					}
+					if(selectedEmployee instanceof Tester){
+						$('#add-type').val('tester');
+						$('#add-testing').val(selectedEmployee['testing_languages']);
+						$('#add-tester').show();
+					}
+					if(selectedEmployee instanceof DbAdmin){
+						$('#add-type').val('dbadmin');
+						$('#add-databases').val(selectedEmployee['databases']);
+						$('#add-dbadmin').show();
+					}
+					
+					$('#add-record-form').show();
+					$('#save-employee').hide();
+					$('#update-employee').show();
+				});
+				
+				$('#update-employee').click(function(){
+					//check empty
+					var empty = validateEmpty();
+					if(empty){
+						//show alert
+						$('#add-error').show().fadeOut(8000);
+					}
+					else{
+						//save new values
+						var index = $('#selected-id').val();
+						var fields = [['name','name'],['age','age'],['city','city'],['experience','years_experience'],['company','years_in_company'],['english','english_level']];
+						$.each(fields,function(key,value){
+							employeesList[index][value[1]] = $('#add-'+value[0]).val();
+						});
+						
+						if(employeesList[index] instanceof Developer)
+							employeesList[index]['programming_languages'] = $('#add-programming').val();
+						if(employeesList[index] instanceof Tester)
+							employeesList[index]['testing_languages'] = $('#add-testing').val();
+						if(employeesList[index] instanceof DbAdmin)
+							employeesList[index]['databases'] = $('#add-databases').val();
+						
+						//update successful
+						updateRow(employeesList[index],index);
+						$('#submit-success').show().fadeOut(8000);
+					}
+					
+					$('#add-record-form').hide();
+					resetForm();
+					$('#save-employee').show();
+					$('#update-employee').hide();
+				});
+				
+			});
+		
+		</script>
+	</body>
+	
+</html>
